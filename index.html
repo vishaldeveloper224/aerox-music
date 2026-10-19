@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aerox Music - Stream Premium Sounds</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-HuCzvga7.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DYTmKznC.css">
+  </head>
+  <body class="dark-theme">
+    <!-- CRITICAL: Override Page Visibility API BEFORE any scripts load.
+         This prevents YouTube iframe from detecting background state and pausing audio.
+         Must run FIRST, before YouTube iframe_api loads. -->
+    <script>
+      (function(){
+        try {
+          // Make document always appear visible
+          Object.defineProperty(document, 'hidden', { get: function(){ return false; }, configurable: true });
+          Object.defineProperty(document, 'visibilityState', { get: function(){ return 'visible'; }, configurable: true });
+          Object.defineProperty(document, 'webkitHidden', { get: function(){ return false; }, configurable: true });
+          
+          // Intercept visibilitychange event listeners so they never fire
+          var _origAddEventListener = EventTarget.prototype.addEventListener;
+          EventTarget.prototype.addEventListener = function(type, fn, opts) {
+            if (type === 'visibilitychange' || type === 'webkitvisibilitychange') {
+              // Don't register this listener at all
+              return;
+            }
+            return _origAddEventListener.call(this, type, fn, opts);
+          };
+          
+          // Also block the dispatchEvent for visibilitychange
+          var _origDispatchEvent = EventTarget.prototype.dispatchEvent;
+          EventTarget.prototype.dispatchEvent = function(event) {
+            if (event && (event.type === 'visibilitychange' || event.type === 'webkitvisibilitychange')) {
+              return true; // swallow the event
+            }
+            return _origDispatchEvent.call(this, event);
+          };
+        } catch(e) {}
+      })();
+    </script>
+    <div id="root"></div>
+    <!-- Global Persistent YouTube Player Container: Always in DOM for Background / Lockscreen Playback -->
+    <div id="yt-player-host" style="position: fixed; top: -9999px; left: -9999px; width: 320px; height: 180px; pointer-events: none; z-index: -9999; opacity: 0.01;">
+      <div id="yt-player-element"></div>
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
+</html>
